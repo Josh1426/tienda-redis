@@ -1,0 +1,16 @@
+FLUSHDB
+HSET producto:1 nombre "Auriculares inalambricos" precio 29.99
+HSET producto:2 nombre "Teclado mecanico" precio 45.50
+HSET producto:3 nombre "Lampara LED" precio 12.00
+EXPIRE producto:1 600
+EXPIRE producto:2 600
+EXPIRE producto:3 600
+SET stock:1 50
+SET stock:2 30
+SET stock:3 100
+SADD categoria:tecnologia 1 2
+SADD categoria:hogar 3
+HINCRBY carrito:1 1 2
+HINCRBY carrito:1 3 1
+EXPIRE carrito:1 604800
+SET sesion:abc123 1 EX 1800

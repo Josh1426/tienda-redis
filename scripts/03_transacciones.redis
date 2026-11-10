@@ -1,0 +1,5 @@
+WATCH stock:2
+MULTI
+DECRBY stock:2 1
+ZINCRBY ranking:ventas 1 2
+EXEC

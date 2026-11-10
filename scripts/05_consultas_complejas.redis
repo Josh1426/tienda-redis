@@ -1,0 +1,12 @@
+ZREVRANGE ranking:ventas 0 2 WITHSCORES
+ZREVRANK ranking:ventas 1
+ZRANGE ranking:ventas 2 +inf BYSCORE WITHSCORES
+ZINTERSTORE ranking:tecnologia 2 ranking:ventas categoria:tecnologia WEIGHTS 1 0
+EXPIRE ranking:tecnologia 60
+ZREVRANGE ranking:tecnologia 0 -1 WITHSCORES
+ZINTERSTORE ranking:hogar 2 ranking:ventas categoria:hogar WEIGHTS 1 0
+EXPIRE ranking:hogar 60
+ZREVRANGE ranking:hogar 0 -1 WITHSCORES
+GET stock:1
+GET stock:2
+GET stock:3

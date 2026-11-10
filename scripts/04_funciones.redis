@@ -1,0 +1,8 @@
+FUNCTION LOAD REPLACE "#!lua name=tienda\nlocal function comprar(keys, args)\n  local s = tonumber(redis.call('GET', keys[1]))\n  if not s then return -1 end\n  if s >= tonumber(args[1]) then\n    redis.call('DECRBY', keys[1], args[1])\n    redis.call('ZINCRBY', keys[2], args[1], args[2])\n    return 1\n  end\n  return 0\nend\nlocal function agregar_carrito(keys, args)\n  if redis.call('EXISTS', keys[1]) == 0 then return -1 end\n  redis.call('HINCRBY', keys[2], args[1], args[2])\n  redis.call('EXPIRE', keys[2], 604800)\n  return 1\nend\nredis.register_function('comprar', comprar)\nredis.register_function('agregar_carrito', agregar_carrito)"
+FCALL comprar 2 stock:1 ranking:ventas 2 1
+FCALL comprar 2 stock:1 ranking:ventas 500 1
+FCALL comprar 2 stock:3 ranking:ventas 4 3
+FCALL comprar 2 stock:99 ranking:ventas 1 99
+FCALL agregar_carrito 2 stock:2 carrito:1 2 1
+FCALL agregar_carrito 2 stock:99 carrito:1 99 1
+HGETALL carrito:1
